@@ -1,0 +1,274 @@
+---
+title: "Bar Charts - R & Python"
+subtitle: "Creando Diagramas Barras con R - Python"
+author: "Renzo Cáceres Rossi"
+date: "2022/09/12"
+output: 
+  ioslides_presentation:
+    logo: logo_r.png
+    transition: slower
+---
+
+```{r setup,include=FALSE}
+
+library(ggplot2)
+
+library(lattice)
+
+library(reticulate)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{python,include=FALSE}
+
+import matplotlib.pyplot as plt
+
+import numpy as np
+
+import seaborn as sns
+
+```
+
+
+## Diagramas de Barras 
+
+El diagrama de barras (**Bar Chart**) es un gráfico estadístico que nos permite representar la distribución de frecuencias de variables cualitativas y cuantitativas discretas.
+
+<center>
+
+![](diagrama_barras_amano.jpg){width=500}
+
+</center>
+
+
+## Data Set - mtcars 
+
+**mtcars** es un data set sobre tendencias estadísticas estadounidenses en la década de los 70's.
+
+
+### var_cyl
+
+```{r var_cyl}
+
+summary(mtcars$cyl)
+
+```
+
+
+### var_gear
+
+```{r var_gear}
+
+summary(mtcars$gear)
+
+```
+
+### var_carb
+
+```{r var_carb}
+
+summary(mtcars$carb)
+
+```
+
+
+## Bar Chart - barplot()
+
+La función  `barplot()` nos permite crear diagramas de barras (**Bar Charts**) en el lenguaje de programación R, utilizaremos la variable cyl (**cilindros**) para crear el gráfico estadístico reespectivo.
+
+```{r barplot,fig.align='center',out.width="70%",fig.cap="Bar Chart creado con la función barplot()"}
+
+x <- table(mtcars$cyl)
+
+colores <- c("orange","blue","purple")
+
+barplot(x,xlab="Cilindros",ylab="Frecuencias",main="Número de Cilindros",col=colores)
+
+
+```
+
+
+## Bar Chart - ggplot2
+
+**ggplot2** es un paquete del lenguaje de programación que nos permite crear gráficos estadísticos de gran calidad, haremos uso de la variable cyl (**cilindros**) para la creación del gráfico estadístico respectivo.
+
+```{r ggplot2,fig.align='center',out.width="80%"}
+
+ggplot(mtcars,aes(cyl)) + geom_bar(fill=colores) + labs(x="Cillindros",y="Frecuencias",title="Número de Cilindros") + theme_dark()
+
+```
+
+
+## Bar Chart - Lattice
+
+**Lattice** es un paquete del lenguaje de programación R, que nos permite crear gráficos estadísticos de muy buena calidad, nos enfocaremos en la variable cyl (**cilindros**) para la creación del gráfico estadístico respectivo.
+
+```{r lattice,fig.align='center',out.width="80%"}
+
+barchart(x,xlab="Cilindros",ylab="Frecuencias",main="Número de Cilindros",col=colores,horizontal=FALSE)
+
+```
+
+
+## mtcars - cyl & gear
+
+A continuación, mostramos como unir dos diagramas de barras (**Bar Charts**) en un solo gráfico, tomando como base el data set **mtcars**, así como sus variables **cyl** (cilindros) y **gear** (engranajes).
+
+```{r cyl_gear,fig.align='center',out.width="80%"}
+
+y <- table(mtcars$gear)
+
+par(mfrow=c(1,2))
+
+barplot(x,xlab="Cilindros",ylab="Frecuencias",main="Número de Cilindros",col=colores)
+
+barplot(y,xlab="Engranajes",ylab="Frecuencias",main="Número de Engranajes",col=rainbow(3))
+
+
+```
+
+
+
+## Bar Charts - Matplotlib
+
+**Matplotlib** es una librería del lenguaje de programación Python, que nos permite crear gráficos estadísticos de gran calidad.
+
+```{python,results='hide',collapse=TRUE,fig.align="center"}
+
+eje_x = ['Python', 'R', 'Node.js', 'PHP']
+ 
+
+eje_y = [50,20,35,47]
+ 
+
+plt.bar(eje_x, eje_y)
+ 
+
+plt.ylabel('Cantidad de usuarios')
+ 
+
+plt.xlabel('Lenguajes de programación')
+ 
+
+plt.title('Usuarios de lenguajes de programación')
+ 
+
+plt.show()
+
+```
+
+
+## Diagrama Barras Apiladas
+
+
+A continuación, presentamos como crear un **diagrama de barras apiladas** en el lenguaje de programación Python, utilizando las librerías **Matplotlib** y **Numpy**.
+
+```{python,results='hide',collapse=TRUE,out.width="80%",fig.align="center"}
+
+serie_1 = [406, 387, 442, 457, 485]
+serie_2 = [421, 453, 435, 478, 512]
+ 
+ 
+numero_de_grupos = len(serie_1)
+indice_barras = np.arange(numero_de_grupos)
+ancho_barras =0.35
+ 
+plt.bar(indice_barras, serie_1, width=ancho_barras, label='Hombres')
+plt.bar(indice_barras + ancho_barras, serie_2, width=ancho_barras, label='Mujeres')
+plt.legend(loc='best')
+
+plt.xticks(indice_barras + ancho_barras, ('2017', '2018', '2019', '2020','2021'))
+ 
+plt.ylabel('Numero de habitantes')
+plt.xlabel('Año')
+plt.title('Numero de habitantes por genero')
+ 
+plt.show()
+
+
+```
+
+
+## Bar charts - Seaborn
+
+**Seaborn** es una librería de visualización de datos del lenguaje de programación Python que permite crear gráficos estadísticos de gran calidad.
+
+```{python,results='hide',collapse=TRUE,fig.align="center",out.width="80%"}
+
+eje_x=[4,6,8]
+
+eje_y = [11,7,14]
+
+sns.barplot(x=eje_x,y=eje_y)
+
+plt.title("Número de Cilindros")
+
+plt.xlabel("Cilindros")
+
+plt.ylabel("Frecuencias")
+
+plt.show()
+
+```
+
+
+## YouTube - ggplot2 & lattice
+
+<center>
+
+<iframe width="300" height="250" src="https://www.youtube.com/embed/EkxRj02iaLk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-external=1></iframe>
+
+
+
+</center>
+
+
+
+## YouTube - Matplotlib
+
+<center>
+
+<iframe width="300" height="250" src="https://www.youtube.com/embed/jPre6LVvr5Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-external=1></iframe>
+
+</center>
+
+
+# Fin de la presentación
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
