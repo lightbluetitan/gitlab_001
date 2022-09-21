@@ -1,0 +1,275 @@
+---
+description: Crear Bar Charts en el lenguaje de programación R, haciendo uso de la función base barplot(), así como de los paquetes ggplot2 y lattice.
+date: today #now #last-modified
+format: 
+  revealjs: 
+    theme: white
+    footer: "<b>Sí lo puedes imaginar,lo puedes programar</b>"
+    chalkboard: true
+    logo: logo_r.png
+    transition: slide
+lang: Es-es
+---
+```{r setup,include=FALSE}
+
+library(ggplot2)
+
+library(lattice)
+
+library(sqldf)
+
+```
+
+---
+
+<center>
+
+<br>
+<br>
+
+::::{.columns}
+
+
+:::{.column width="50%"}
+
+![](rmarkdown_logo_01.png)
+
+:::
+
+:::{.column width="50%"}
+
+![](quarto_logo_01.png)
+
+:::
+
+
+
+::::
+
+</center>
+
+
+# Bar Charts con ggplot2 & lattice
+
+## Herramientas
+
+Lista de **paquetes** (packages) y **librerías** (libraries) a utilizar durante la presentación.
+
+
+:::{.incremental}
+
+- Lenguaje de programación R 4.2x
+
+- Lenguaje de programación Python 3.10x
+
+- Paquetes: ggplot2,lattice y sqldf
+
+- Librerías: Matplotlib, Numpy y Seaborn
+
+:::
+
+:::{.callout-tip}
+Recomendamos instalar las últimas versiones de **R,RStudio,Python y Quarto**.
+
+:::
+
+
+## Markdown - RMarkdown - Quarto
+
+<br>
+
+
+:::{laytout-ncol=3}
+
+<center>
+
+![Logo Markdown](markdown_logo_01.png)
+![Logo RMarkdown](rmarkdown_logo_01.png)
+![Logo Quarto](quarto_logo_01.png)
+
+</center>
+
+:::
+
+::: aside
+El uso de **Markdown** mejora la estructura y presentación de tus documentos **Quarto**
+:::
+
+## Data Set - mtcars
+
+
+:::{.panel-tabset}
+
+## mtcars
+
+```{r}
+
+summary(mtcars)
+
+```
+
+
+
+## var_cyl
+
+```{r}
+
+summary(mtcars$cyl)
+
+cyl_table <- sqldf("select cyl,count(cyl) as cantidad from mtcars group by cyl")
+
+cyl_table
+
+```
+
+
+## var_gear
+
+```{r}
+
+summary(mtcars$gear)
+
+gear_table <- sqldf("select gear,count(gear) as cantidad from mtcars group by gear")
+
+gear_table
+
+```
+
+
+
+:::
+
+
+## Bar Chart - barplot()
+
+La función  `barplot()` nos permite crear diagramas de barras (**Bar Charts**) en el lenguaje de programación R, utilizaremos la variable cyl (**cilindros**).
+
+
+```{r barplot,fig.align='center'}
+
+x <- table(mtcars$cyl)
+
+colores <- c("orange","blue","purple")
+
+barplot(x,xlab="Cilindros",ylab="Frecuencias",main="Número de Cilindros",col=colores)
+
+
+```
+
+
+## Bar Chart - ggplot2
+
+**ggplot2** es un paquete del lenguaje de programación que nos permite crear gráficos estadísticos de gran calidad, haremos uso de la variable cyl (**cilindros**).
+
+
+```{r ggplot2,fig.align='center',out.width="70%"}
+
+
+ggplot(mtcars,aes(cyl)) + geom_bar(fill=colores) + labs(x="Cillindros",y="Frecuencias",title="Número de Cilindros") + theme_dark()
+
+```
+
+
+
+## Bar Chart - Lattice
+
+**Lattice** es un paquete del lenguaje de programación R, que nos permite crear gráficos estadísticos de muy buena calidad, nos enfocaremos en la variable cyl (**cilindros**) del data set **mtcars**
+
+```{r lattice,fig.align='center',out.width="80%"}
+
+barchart(x,xlab="Cilindros",ylab="Frecuencias",main="Número de Cilindros",col=colores,horizontal=FALSE)
+
+```
+
+
+
+## mtcars - cyl & gear {background-color="#DCDCDC"}
+
+```{r cyl_gear,fig.align='center',echo=TRUE,out.width="60%",`code-line-numbers`="3-6"}
+y <- table(mtcars$gear)
+
+par(mfrow=c(1,2))
+
+barplot(x,xlab="Cilindros",ylab="Frecuencias",
+        main="Número de Cilindros",col=colores)
+
+barplot(y,xlab="Engranajes",ylab="Frecuencias",
+        main="Número de Engranajes",col=rainbow(3))
+
+
+```
+
+
+# Bar Charts con Python
+
+
+## Matplotlib 01
+
+```{python,results='hide',collapse=TRUE,fig.align='center',echo=TRUE,out.width="60%",`code-line-numbers`="1"}
+import matplotlib.pyplot as plt
+eje_x = ['Python', 'R', 'Node.js', 'PHP']
+eje_y = [50,20,35,47]
+plt.bar(eje_x, eje_y)
+plt.ylabel('Cantidad de usuarios')
+plt.xlabel('Lenguajes de programación')
+plt.title('Usuarios de lenguajes de programación')
+plt.show()
+```
+
+
+
+## Matplotlib 02 {background-color="#DCDCDC"}
+
+```{python,results='hide',collapse=TRUE,fig.align='center',echo=TRUE,out.width="60%",`code-line-numbers`="4"}
+import matplotlib.pyplot as plt
+eje_x = ['Prog.', 'Ciencia', 'Mat.', 'Ing.']
+eje_y = [76,31,45,57]
+plt.barh(eje_x, eje_y, color="green")
+plt.ylabel('Empleados')
+plt.xlabel('Habilidades')
+plt.title('Habilidades')
+plt.show()
+```
+
+
+## Seaborn 01
+
+```{python,results='hide',collapse=TRUE,fig.align='center',echo=TRUE,out.width="50%",`code-line-numbers`="1-2"}
+import matplotlib.pyplot as plt
+import seaborn as sns
+eje_x = [4,6,8]
+eje_y = [11,7,14]
+sns.barplot(x=eje_x,y=eje_y)
+plt.title("Número de Cilindros")
+plt.xlabel("Cilindros")
+plt.ylabel("Frecuencias")
+plt.show()
+```
+
+
+## Diagrama Barras Apiladas
+
+```{.python}
+import numpy as np
+import matplotlib.pyplot as plt
+serie_1 = [406, 387, 442, 457, 485]
+serie_2 = [421, 453, 435, 478, 512]
+numero_de_grupos = len(serie_1)
+indice_barras = np.arange(numero_de_grupos)
+ancho_barras =0.35
+plt.bar(indice_barras, serie_1, width=ancho_barras, label='Hombres')
+plt.bar(indice_barras + ancho_barras, serie_2, width=ancho_barras, label='Mujeres')
+plt.legend(loc='best')
+plt.xticks(indice_barras + ancho_barras, ('2017', '2018', '2019', '2020','2021'))
+ 
+plt.ylabel('Numero de habitantes')
+plt.xlabel('Año')
+plt.title('Numero de habitantes por genero')
+ 
+plt.show()
+```
+
+
+
+# Fin de la presentación
+
